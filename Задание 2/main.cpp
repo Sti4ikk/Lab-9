@@ -1,12 +1,14 @@
 #include <iostream>
 #include "structs.h"
 #include <fstream>
+#include <Windows.h>
 
 void enterInfo();
 
 int main()
 {
-	setlocale(0, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 
 	enterInfo();
 

@@ -28,16 +28,20 @@ int main()
 	   98, 58, -10, -29, 95, 62, 77, 89, 36, -32,
 
 	   78, 60, -79, -18, 30, -13, -34, -92, 1, -38 };
+
 	int row;
 	int column;
+
 	// получаем размеры для массива
 	getLenOfArr(row, column);
+
 	// выделяем память под двумерный массив
 	int** newArr = new int* [row];
 	for (int i = 0; i < row; i++)
 	{
 		newArr[i] = new int[column];
 	}
+
 	inicializationOFArr(row, column, newArr, arr1);
 	foundMaxElOfRow(row, column, newArr);
 
@@ -49,7 +53,6 @@ int main()
 
 	return 0;
 }
-
 
 void getLenOfArr(int& row, int& column)
 {

@@ -16,9 +16,6 @@ int main()
 	readInfo(*znak);
 	printInfo(*znak);
 
-
-
-
 	for (int i = 0; i < 10; i++)
 		delete znak[i];
 	delete[] znak;
@@ -35,7 +32,7 @@ void readInfo(Znak* znak)
 
 void printInfo(Znak* znak)
 {
-	for (int i = 0; i < 5; ++i) 
+	for (int i = 0; i < 3; ++i) 
 	{
 	std::cout << "Человек " << i + 1 << ":\n";
 	std::cout << "Фамилия: " << znak[i].surName << std::endl;

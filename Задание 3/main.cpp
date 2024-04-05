@@ -4,59 +4,13 @@
 #include <Windows.h>
 #include <array>
 #include <fstream>
+#include "structs.h"
 
-// Определение структуры Human
-struct Human {
-    std::string surName;
-    std::string name;
-    std::string znakZodiaka;
-    int dateOfDirthday[3]; // День, месяц, год
-};
 
-// Определение структуры Znaki
-struct Znaki {
-    std::string znak;
-    int dateOfStart[2]; // Месяц, день начала знака
-    int dateOfEnd[2];   // Месяц, день окончания знака
-};
+bool isZnakExistent(const Human& person, std::array<Znaki, 12>& znaki);
+bool isZnakCorrect(const Human& person, std::array<Znaki, 12>& znaki);
+void readInfo(Human* people);
 
-// Проверка, существует ли знак зодиака
-bool isZnakExistent(const Human& person, std::array<Znaki, 12>& znaki) {
-    for (const auto& znak : znaki) {
-        if (person.znakZodiaka == znak.znak) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Проверка, соответствует ли знак зодиака дате рождения
-bool isZnakCorrect(const Human& person, std::array<Znaki, 12>& znaki) 
-{
-    std::string currentZnak;
-    for (const auto& znak : znaki) {
-        if ((person.dateOfDirthday[1] == znak.dateOfStart[1] &&
-            person.dateOfDirthday[0] >= znak.dateOfStart[0] &&
-            person.dateOfDirthday[0] <= 30) or
-            ((person.dateOfDirthday[1] == znak.dateOfEnd[1]) &&
-                (person.dateOfDirthday[0] <= znak.dateOfEnd[0] &&
-                    person.dateOfDirthday[0] >= 1))) 
-        {
-            currentZnak = znak.znak;
-            if (currentZnak == person.znakZodiaka)
-                return true;
-
-        }
-    }
-    return false;
-}
-
-void readInfo(Human* people)
-{
-    std::ifstream file("D:/Files/Znaki.dat", std::ios_base::binary);
-    for (int i = 0; i < 5 && file.read(reinterpret_cast<char*>(&people[i]), sizeof(Human)); ++i) {}
-    file.close();
-}
 
 int main()
 {
@@ -82,7 +36,7 @@ int main()
     readInfo(people);
 
     // Вывод информации о людях, чей знак зодиака не соответствует дате рождения
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 3; ++i) {
         if (isZnakExistent(people[i], znaki) && !isZnakCorrect(people[i], znaki)) 
         {
             std::cout << "Человек " << i + 1 << ":\n";
@@ -98,4 +52,44 @@ int main()
     delete[] people;
 
     return 0;
+}
+
+// Проверка, существует ли знак зодиака
+bool isZnakExistent(const Human& person, std::array<Znaki, 12>& znaki) {
+    for (const auto& znak : znaki) {
+        if (person.znakZodiaka == znak.znak) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Проверка, соответствует ли знак зодиака дате рождения
+bool isZnakCorrect(const Human& person, std::array<Znaki, 12>& znaki)
+{
+    std::string currentZnak;
+    for (const auto& znak : znaki) {
+        if ((person.dateOfDirthday[1] == znak.dateOfStart[1] &&
+            person.dateOfDirthday[0] >= znak.dateOfStart[0] &&
+            person.dateOfDirthday[0] <= 30) or
+            ((person.dateOfDirthday[1] == znak.dateOfEnd[1]) &&
+                (person.dateOfDirthday[0] <= znak.dateOfEnd[0] &&
+                    person.dateOfDirthday[0] >= 1)))
+        {
+            currentZnak = znak.znak;
+            if (currentZnak == person.znakZodiaka)
+                return true;
+
+        }
+    }
+    return false;
+}
+
+
+
+void readInfo(Human* people)
+{
+    std::ifstream file("D:/Files/Znaki.dat", std::ios_base::binary);
+    for (int i = 0; i < 5 && file.read(reinterpret_cast<char*>(&people[i]), sizeof(Human)); ++i) {}
+    file.close();
 }
